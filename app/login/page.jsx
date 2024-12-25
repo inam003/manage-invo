@@ -1,5 +1,6 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,11 +11,36 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import supabase from "@/lib/supabaseClient";
+import toast from "react-hot-toast";
 
 export const description =
-  "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
+  "A login form with Email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
 
 export default function LoginForm() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      console.log(data);
+      sessionStorage.setItem("token", JSON.stringify(data));
+      toast.success("Logged in successfully");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Card className="mx-auto my-36 max-w-[23rem] sm:max-w-sm">
       <CardHeader>
@@ -28,6 +54,7 @@ export default function LoginForm() {
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
               type="email"
               placeholder="example@gmail.com"
@@ -45,6 +72,7 @@ export default function LoginForm() {
               </Link>
             </div>
             <Input
+              onChange={(e) => setPassword(e.target.value)}
               id="password"
               type="password"
               placeholder="******"
@@ -52,6 +80,7 @@ export default function LoginForm() {
             />
           </div>
           <Button
+            onClick={handleSignIn}
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-400 text-white"
           >

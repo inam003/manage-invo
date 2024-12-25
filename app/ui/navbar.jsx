@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import {
@@ -20,8 +22,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import supabase from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
   const menus = [
     {
       title: "Dashboard",
@@ -39,6 +47,41 @@ export default function Navbar() {
       path: "/dashboard/customers",
     },
   ];
+
+  useEffect(() => {
+    fetchUserEmail();
+  }, []);
+
+  const fetchUserEmail = async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("email")
+        .eq("id", user.id);
+      if (error) throw error;
+      console.log(data);
+      if (data) {
+        setEmail(data[0].email);
+      }
+    } catch (error) {
+      console.error("Error fetching user email:", error.message);
+    }
+  };
+
+  const handleSignOut = async () => {
+    const { data, error } = await supabase.auth.signOut();
+    console.log(data);
+    if (error) console.error("Sign out error", error.message);
+    sessionStorage.removeItem("token");
+    toast.success("Logged out successfully");
+    router.push("/login");
+  };
+
   return (
     <header className="bg-white fixed w-full top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
       <nav className="hidden md:flex">
@@ -55,7 +98,7 @@ export default function Navbar() {
         </SheetTrigger>
         <SheetContent className="w-[250px] pl-2 pt-2" side="left">
           <Link href="/dashboard">
-            <ScrollText className="size-8 mx-4" />
+            <ScrollText className="size-8 mx-4 text-blue-600" />
           </Link>
           <nav className="grid items-start px-2 py-4 text-sm font-medium lg:px-4">
             {menus.map((item, id) => (
@@ -82,8 +125,8 @@ export default function Navbar() {
               <span className="sr-only">Toggle user menu</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuLabel>User 1</DropdownMenuLabel>
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuLabel>{email}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="rounded-lg cursor-pointer">
               <Link className="flex items-center" href={"/dashboard/profile"}>
@@ -98,7 +141,10 @@ export default function Navbar() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="rounded-lg cursor-pointer">
+            <DropdownMenuItem
+              onClick={handleSignOut}
+              className="rounded-lg cursor-pointer"
+            >
               <LogOut className="mr-2 size-4" />
               Logout
             </DropdownMenuItem>

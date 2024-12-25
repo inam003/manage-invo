@@ -1,5 +1,6 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,11 +11,40 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import supabase from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export const description =
-  "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
+  "A sign up form with Email and Password inside a card. There's an option to sign up with Google and a link to login if you already have an account";
 
 export default function SignUpForm() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      const { error } = await supabase
+        .from("users")
+        .insert({ email: email, password: password });
+      if (error) throw error;
+
+      toast.success("Account created successfully");
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Card className="mx-auto my-36 max-w-[23rem] sm:max-w-sm">
       <CardHeader>
@@ -28,6 +58,7 @@ export default function SignUpForm() {
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
               type="email"
               placeholder="example@gmail.com"
@@ -40,6 +71,7 @@ export default function SignUpForm() {
               <Label htmlFor="password">Password</Label>
             </div>
             <Input
+              onChange={(e) => setPassword(e.target.value)}
               id="password"
               type="password"
               placeholder="******"
@@ -47,6 +79,7 @@ export default function SignUpForm() {
             />
           </div>
           <Button
+            onClick={handleSignUp}
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-400 text-white"
           >
