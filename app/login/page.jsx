@@ -23,21 +23,26 @@ export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
-      const { data } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      console.log(data);
-      sessionStorage.setItem("token", JSON.stringify(data));
-      toast.success("Logged in successfully");
+
+      if (error) throw error;
+
+      toast.success("Logged in successfully!");
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,9 +87,10 @@ export default function LoginForm() {
           <Button
             onClick={handleSignIn}
             type="submit"
+            disabled={isLoading}
             className="w-full bg-blue-500 hover:bg-blue-400 text-white"
           >
-            Login
+            {isLoading ? "Loging in..." : "Login"}
           </Button>
           <Button variant="outline" className="w-full">
             Login with Google

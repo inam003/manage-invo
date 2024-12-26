@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Home,
@@ -25,7 +25,6 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import supabase from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const router = useRouter();
@@ -64,7 +63,6 @@ export default function Navbar() {
         .select("email")
         .eq("id", user.id);
       if (error) throw error;
-      console.log(data);
       if (data) {
         setEmail(data[0].email);
       }
@@ -75,9 +73,8 @@ export default function Navbar() {
 
   const handleSignOut = async () => {
     const { data, error } = await supabase.auth.signOut();
-    console.log(data);
     if (error) console.error("Sign out error", error.message);
-    sessionStorage.removeItem("token");
+
     toast.success("Logged out successfully");
     router.push("/login");
   };

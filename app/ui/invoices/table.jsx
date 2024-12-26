@@ -16,9 +16,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import InvoiceStatus from "./status";
 import PaginationButtons from "./pagination";
+import Link from "next/link";
 
 const InvoicesTable = () => {
   const invoicesData = [
@@ -65,6 +66,8 @@ const InvoicesTable = () => {
       status: "pending",
     },
   ];
+
+  let id = 1;
   return (
     <div>
       <div className="rounded-md border">
@@ -102,16 +105,13 @@ const InvoicesTable = () => {
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
                       <DropdownMenuItem className="cursor-pointer">
-                        <div className="flex items-center">
-                          <Eye className="size-4 mr-2" />
-                          View details
-                        </div>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
-                        <div className="flex items-center">
+                        <Link
+                          href={`/dashboard/invoices/${id}/edit`}
+                          className="flex items-center"
+                        >
                           <Edit className="size-4 mr-2" />
                           Edit invoice
-                        </div>
+                        </Link>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem className="cursor-pointer">
