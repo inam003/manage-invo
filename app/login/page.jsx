@@ -37,6 +37,7 @@ export default function LoginForm() {
 
       if (error) throw error;
 
+      sessionStorage.setItem("token", JSON.stringify(data));
       toast.success("Logged in successfully!");
       router.push("/dashboard");
     } catch (error) {

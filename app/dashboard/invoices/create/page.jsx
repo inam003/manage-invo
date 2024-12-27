@@ -9,24 +9,45 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import supabase from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import { generateSlug } from "@/lib/utils";
+import { nanoid } from "nanoid";
+import { useEffect } from "react";
 
 const CreateInvoice = () => {
   const router = useRouter();
   const [customerName, setCustomerName] = useState("");
+  const [invoicePurpose, setInvoicePurpose] = useState("");
+  const [userId, setUserId] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [invoiceAmount, setInvoiceAmount] = useState("");
   const [invoiceStatus, setInvoiceStatus] = useState("pending");
 
+  useEffect(() => {
+    const getUserSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      console.log("Session data:", data.session.user.id);
+      setUserId(data.session.user.id);
+    };
+
+    getUserSession();
+  }, []);
+
   const handleStatusChange = (value) => {
     setInvoiceStatus(value);
   };
+
+  const invoiceSlug = generateSlug(invoicePurpose);
 
   const addDataToDB = async (e) => {
     e.preventDefault();
 
     try {
       const { error } = await supabase.from("invoices").insert({
+        user: userId,
+        slug: invoiceSlug,
         customerName: customerName,
+        invoicePurpose: invoicePurpose,
         customerEmail: customerEmail,
         invoiceAmount: invoiceAmount,
         invoiceStatus: invoiceStatus,
@@ -44,14 +65,23 @@ const CreateInvoice = () => {
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-medium">Create Invoice</h1>
       <div className="w-full mx-auto space-y-6">
-        <Card>
-          <CardContent className="p-6 space-y-6">
+        <Card className="bg-gray-50">
+          <CardContent className="p-6 space-y-4">
             <div className="space-y-2">
               <Label>Customer Name</Label>
               <Input
                 onChange={(e) => setCustomerName(e.target.value)}
                 type="text"
                 placeholder="Enter customer name"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Purpose</Label>
+              <Input
+                onChange={(e) => setInvoicePurpose(e.target.value)}
+                type="text"
+                placeholder="Enter invoice purpose"
               />
             </div>
 
@@ -105,9 +135,11 @@ const CreateInvoice = () => {
         </Card>
 
         <div className="flex justify-end gap-4">
-          <Button variant="outline" className="bg-white hover:bg-gray-50">
-            Cancel
-          </Button>
+          <Link href="/dashboard/invoices">
+            <Button variant="outline" className="bg-white hover:bg-gray-50">
+              Cancel
+            </Button>
+          </Link>
           <Button
             onClick={addDataToDB}
             className="bg-blue-600 transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"

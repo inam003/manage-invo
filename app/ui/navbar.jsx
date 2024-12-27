@@ -75,6 +75,7 @@ export default function Navbar() {
     const { data, error } = await supabase.auth.signOut();
     if (error) console.error("Sign out error", error.message);
 
+    sessionStorage.removeItem("token");
     toast.success("Logged out successfully");
     router.push("/login");
   };
