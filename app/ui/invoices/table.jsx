@@ -20,60 +20,21 @@ import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import InvoiceStatus from "./status";
 import PaginationButtons from "./pagination";
 import Link from "next/link";
+import supabase from "@/lib/supabaseClient";
+import toast from "react-hot-toast";
 
 const InvoicesTable = ({ invoicesData }) => {
-  // const invoicesData = [
-  //   {
-  //     customerName: "John Doe",
-  //     purpose: "Agenecy Website",
-  //     email: "johndoe@email.com",
-  //     amount: 199.0,
-  //     date: "Dec 12, 2024",
-  //     status: "pending",
-  //   },
-  //   {
-  //     customerName: "Olivia Martinohn",
-  //     purpose: "Landing Page",
-  //     email: "olivia.martin@email.com",
-  //     amount: 19.0,
-  //     date: "Dec 12, 2024",
-  //     status: "paid",
-  //   },
-  //   {
-  //     customerName: "Jackson Lee",
-  //     purpose: "Corporate Website",
-  //     email: "jackson.lee@email.com",
-  //     amount: 39.0,
-  //     date: "Dec 12, 2024",
-  //     status: "paid",
-  //   },
-  //   {
-  //     customerName: "Isabella Nguyen",
-  //     purpose: "E-commerce Website",
-  //     email: "isabella.nguyen@email.com",
-  //     amount: 309.0,
-  //     date: "Dec 12, 2024",
-  //     status: "paid",
-  //   },
-  //   {
-  //     customerName: "William Kim",
-  //     purpose: "Personal Portfolio",
-  //     email: "willkim@email.com",
-  //     amount: 100.0,
-  //     date: "Dec 12, 2024",
-  //     status: "pending",
-  //   },
-  //   {
-  //     customerName: "Sofia Davis",
-  //     purpose: "Finance Dashboard",
-  //     email: "sofia.davis@email.com",
-  //     amount: 150.0,
-  //     date: "Dec 12, 2024",
-  //     status: "pending",
-  //   },
-  // ];
+  const deleteInvoice = async (id) => {
+    try {
+      const response = await supabase.from("invoices").delete().eq("id", id);
 
-  let id = 1;
+      toast.success("Invoice deleted successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="rounded-md border">
@@ -86,23 +47,23 @@ const InvoicesTable = ({ invoicesData }) => {
               <TableHead className="font-medium">Amount</TableHead>
               <TableHead className="font-medium">Date</TableHead>
               <TableHead className="font-medium">Status</TableHead>
-              {/* <TableHead className="font-medium">Actions</TableHead> */}
+              <TableHead className="font-medium">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {invoicesData.map((data, index) => (
-              <TableRow key={index}>
+            {invoicesData.map((invoice) => (
+              <TableRow key={invoice.id}>
                 <TableCell className="font-medium pl-3 py-3">
-                  {data.customerName}
+                  {invoice.customerName}
                 </TableCell>
-                <TableCell className="py-3">{data.purpose}</TableCell>
-                <TableCell className="py-3">{data.email}</TableCell>
-                <TableCell className="py-3 pl-7">{`$${data.amount}`}</TableCell>
-                <TableCell className="py-3">{data.date}</TableCell>
+                <TableCell className="py-3">{invoice.invoicePurpose}</TableCell>
+                <TableCell className="py-3">{invoice.customerEmail}</TableCell>
+                <TableCell className="py-3 pl-5">{`$${invoice.invoiceAmount}`}</TableCell>
+                <TableCell className="py-3">{invoice.created_at}</TableCell>
                 <TableCell className="py-3">
-                  <InvoiceStatus status={data.status} />
+                  <InvoiceStatus status={invoice.invoiceStatus} />
                 </TableCell>
-                {/* <TableCell className="py-3">
+                <TableCell className="py-3 pl-6">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="size-8 p-0">
@@ -114,7 +75,7 @@ const InvoicesTable = ({ invoicesData }) => {
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
                       <DropdownMenuItem className="cursor-pointer">
                         <Link
-                          href={`/dashboard/invoices/${id}/edit`}
+                          href={`/dashboard/invoices/${invoice.slug}/edit`}
                           className="flex items-center"
                         >
                           <Edit className="size-4 mr-2" />
@@ -123,14 +84,17 @@ const InvoicesTable = ({ invoicesData }) => {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem className="cursor-pointer">
-                        <div className="flex items-center hover:text-red-500">
+                        <div
+                          onClick={() => deleteInvoice(invoice.id)}
+                          className="flex items-center hover:text-red-500"
+                        >
                           <Trash className="size-4 mr-2" />
                           Delete invoice
                         </div>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

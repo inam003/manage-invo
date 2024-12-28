@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,8 +11,6 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { generateSlug } from "@/lib/utils";
-import { nanoid } from "nanoid";
-import { useEffect } from "react";
 
 const CreateInvoice = () => {
   const router = useRouter();
@@ -26,7 +24,6 @@ const CreateInvoice = () => {
   useEffect(() => {
     const getUserSession = async () => {
       const { data } = await supabase.auth.getSession();
-      console.log("Session data:", data.session.user.id);
       setUserId(data.session.user.id);
     };
 
@@ -44,8 +41,9 @@ const CreateInvoice = () => {
 
     try {
       const { error } = await supabase.from("invoices").insert({
-        user: userId,
+        user_id: userId,
         slug: invoiceSlug,
+        created_at: new Date(),
         customerName: customerName,
         invoicePurpose: invoicePurpose,
         customerEmail: customerEmail,

@@ -16,8 +16,7 @@ const Invoices = () => {
       if (session) {
         setToken(true);
         const userDetails = JSON.parse(session);
-        console.log("User details:", userDetails);
-        fetchInvoices(userDetails.user.id);
+        fetchInvoices(userDetails.session.user.id);
       }
     };
     fetchSession();
@@ -25,28 +24,32 @@ const Invoices = () => {
 
   const fetchInvoices = async () => {
     try {
-      // Get current user
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) return [];
-
-      // Fetch invoices with proper query
-      const { data, error } = await supabase.from("invoices").select();
-      // .eq("id", user.id);
-
+      const userDetails = JSON.parse(sessionStorage.getItem("token"));
+      const { data, error } = await supabase
+        .from("invoices")
+        .select(
+          `
+        id,
+        user_id,
+        customerName,
+        customerEmail,
+        invoicePurpose,
+        invoiceAmount,
+        invoiceStatus,
+        slug,
+        created_at
+      `
+        )
+        .eq("user_id", userDetails.session.user.id)
+        .order("created_at", { ascending: false });
       if (error) {
-        console.error("Error:", error);
-        return [];
+        console.error("Error fetching invoices:", error);
+        return;
       }
 
-      console.log("Fetched data:", data); // Debug
       setInvoices(data);
-      return data || [];
     } catch (error) {
       console.error("Error:", error);
-      return [];
     }
   };
 
