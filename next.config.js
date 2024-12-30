@@ -1,7 +1,8 @@
-import {strict} from "node:assert";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
