@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Cards from "../ui/main/cards";
 import MonthlyRevenueChart from "../ui/main/chart";
@@ -12,7 +10,7 @@ const Dashboard = () => {
       <div>
         <Cards />
       </div>
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <div className="flex flex-col xl:flex-row gap-8 lg:gap-8 overflow-x-hidden">
         <div>
           <MonthlyRevenueChart />
         </div>

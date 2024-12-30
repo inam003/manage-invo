@@ -20,21 +20,9 @@ import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import InvoiceStatus from "./status";
 import PaginationButtons from "./pagination";
 import Link from "next/link";
-import supabase from "@/lib/supabaseClient";
-import toast from "react-hot-toast";
+import { deleteInvoice } from "@/lib/actions";
 
 const InvoicesTable = ({ invoicesData }) => {
-  const deleteInvoice = async (id) => {
-    try {
-      const response = await supabase.from("invoices").delete().eq("id", id);
-
-      toast.success("Invoice deleted successfully");
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div>
       <div className="rounded-md border">

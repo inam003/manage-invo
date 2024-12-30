@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, DollarSign, ScrollText, Users } from "lucide-react";
 
-const Cards = ({ title, value, icon }) => {
+const Cards = async () => {
   const cardsData = [
     {
       title: "Collected",

@@ -1,5 +1,4 @@
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -7,34 +6,29 @@ import Link from "next/link";
 const LatestInvoices = () => {
   const latestData = [
     {
-      name: "Olivia Martin",
-      email: "olivia.martin@email.com",
-      amount: 1999.0,
-      avatafFallback: "OM",
+      customerName: "Olivia Martin",
+      customerEmail: "olivia.martin@email.com",
+      invoiceAmount: 1999.0,
     },
     {
-      name: "Jackson Lee",
-      email: "jackson.lee@email.com",
-      amount: 39.0,
-      avatafFallback: "JL",
+      customerName: "Jackson Lee",
+      customerEmail: "jackson.lee@email.com",
+      invoiceAmount: 39.0,
     },
     {
-      name: "Isabella Nguyen",
-      email: "isabella.nguyen@email.com",
-      amount: 299.0,
-      avatafFallback: "IN",
+      customerName: "Isabella Nguyen",
+      customerEmail: "isabella.nguyen@email.com",
+      invoiceAmount: 299.0,
     },
     {
-      name: "William Kim",
-      email: "will@email.com",
-      amount: 99.0,
-      avatafFallback: "WK",
+      customerName: "William Kim",
+      customerEmail: "will@email.com",
+      invoiceAmount: 99.0,
     },
     {
-      name: "Sofia Davis",
-      email: "sofia.davis@email.com",
-      amount: "",
-      avatafFallback: "SD",
+      customerName: "Sofia Davis",
+      customerEmail: "sofia.davis@email.com",
+      invoiceAmount: "",
     },
   ];
   return (
@@ -49,21 +43,21 @@ const LatestInvoices = () => {
       </div>
       <Card>
         <CardContent className="grid px-4 py-2">
-          {latestData.map((data, index) => (
+          {latestData.map((invoice) => (
             <div
-              key={index}
+              key={invoice.id}
               className="flex items-center gap-4 px-2 py-4 rounded-lg hover:bg-slate-100"
             >
-              <Avatar className="size-9">
-                <AvatarImage src="/defaultAvatar.avif" alt="Avatar" />
-                <AvatarFallback>{data.avatafFallback}</AvatarFallback>
-              </Avatar>
               <div className="grid gap-1 mr-[14rem]">
-                <p className="text-sm font-medium leading-none">{data.name}</p>
-                <p className="text-sm text-muted-foreground">{data.email}</p>
+                <p className="text-sm font-medium leading-none">
+                  {invoice.customerName}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {invoice.customerEmail}
+                </p>
               </div>
               <div className="ml-auto font-medium">
-                {data.amount > 0 ? `$${data.amount}` : `$0`}
+                {invoice.invoiceAmount > 0 ? `$${invoice.invoiceAmount}` : `$0`}
               </div>
             </div>
           ))}
