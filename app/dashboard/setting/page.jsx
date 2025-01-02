@@ -36,7 +36,6 @@ const Setting = () => {
         .eq("id", userDetails.session.user.id);
 
       if (error) throw error;
-      console.log(data);
       setEmail(data[0].email);
       setPassword(data[0].password);
     } catch (error) {

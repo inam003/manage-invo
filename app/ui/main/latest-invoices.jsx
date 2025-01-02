@@ -2,15 +2,8 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-// import {fetchLatestInvoices} from "@/lib/data";
 
-const LatestInvoices = async () => {
-  // const latestInvoices = await fetchLatestInvoices();
-
-  // if (latestInvoices.length === 0) {
-  //   return <p>No invoices found or session not available.</p>;
-  // }
-
+const LatestInvoices = () => {
   const latestInvoices = [
     {
       customerName: "Olivia Martin",
