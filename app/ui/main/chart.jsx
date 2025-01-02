@@ -20,6 +20,8 @@ const data = [
 ];
 
 export default function MonthlyRevenueChart() {
+  // async/await
+
   return (
     <div className="flex flex-col gap-3">
       <h1 className="text-xl font-semibold">Monthly Revenue</h1>

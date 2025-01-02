@@ -21,7 +21,7 @@ const Setting = () => {
 
   const getAccountInfo = async () => {
     try {
-      const userDetails = getSession();
+      const userDetails = await getSession();
       if (!userDetails) return [];
 
       const { data, error } = await supabase
@@ -105,7 +105,7 @@ const Setting = () => {
         </Link>
         <Button
           onClick={updateAccountInfo}
-          className="bg-blue-600 transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          className="bg-blue-500 transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
           Update Setting
         </Button>

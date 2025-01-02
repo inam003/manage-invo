@@ -62,7 +62,7 @@ const Sidebar = () => {
       </nav>
       <Button
         onClick={handleSignOut}
-        className="fixed bottom-4 left-4 px-[3.5rem] bg-blue-600 transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        className="fixed bottom-4 left-4 px-[3.5rem] bg-blue-500 transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
       >
         Logout
         <LogOut className="size-4 ml-2" />

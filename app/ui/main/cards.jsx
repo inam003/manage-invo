@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, DollarSign, ScrollText, Users } from "lucide-react";
 
 const Cards = async () => {
+  // async/await
+
   const cardsData = [
     {
       title: "Collected",

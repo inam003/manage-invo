@@ -10,25 +10,15 @@ import supabase from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { generateSlug } from "@/lib/utils";
+import { formatDate, generateSlug } from "@/lib/utils";
 
 const CreateInvoice = () => {
   const router = useRouter();
   const [customerName, setCustomerName] = useState("");
   const [invoicePurpose, setInvoicePurpose] = useState("");
-  const [userId, setUserId] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [invoiceAmount, setInvoiceAmount] = useState("");
   const [invoiceStatus, setInvoiceStatus] = useState("pending");
-
-  useEffect(() => {
-    const getUserSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setUserId(data.session.user.id);
-    };
-
-    getUserSession();
-  }, []);
 
   const handleStatusChange = (value) => {
     setInvoiceStatus(value);
@@ -41,9 +31,8 @@ const CreateInvoice = () => {
 
     try {
       const { error } = await supabase.from("invoices").insert({
-        user_id: userId,
         slug: invoiceSlug,
-        created_at: new Date(),
+        created_at: formatDate(new Date()),
         customerName: customerName,
         invoicePurpose: invoicePurpose,
         customerEmail: customerEmail,
@@ -140,7 +129,7 @@ const CreateInvoice = () => {
           </Link>
           <Button
             onClick={addDataToDB}
-            className="bg-blue-600 transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="bg-blue-500 transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           >
             Create Invoice
           </Button>

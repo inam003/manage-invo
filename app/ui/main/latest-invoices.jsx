@@ -2,9 +2,16 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+// import {fetchLatestInvoices} from "@/lib/data";
 
-const LatestInvoices = () => {
-  const latestData = [
+const LatestInvoices = async () => {
+  // const latestInvoices = await fetchLatestInvoices();
+
+  // if (latestInvoices.length === 0) {
+  //   return <p>No invoices found or session not available.</p>;
+  // }
+
+  const latestInvoices = [
     {
       customerName: "Olivia Martin",
       customerEmail: "olivia.martin@email.com",
@@ -43,10 +50,10 @@ const LatestInvoices = () => {
       </div>
       <Card>
         <CardContent className="grid px-4 py-2">
-          {latestData.map((invoice) => (
+          {latestInvoices.map((invoice) => (
             <div
               key={invoice.id}
-              className="flex items-center gap-4 px-2 py-4 rounded-lg hover:bg-slate-100"
+              className="flex items-center px-2 py-4 rounded-lg hover:bg-slate-100"
             >
               <div className="grid gap-1 mr-[14rem]">
                 <p className="text-sm font-medium leading-none">
