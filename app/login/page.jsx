@@ -46,7 +46,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="mx-auto my-36 max-w-[23rem] sm:max-w-sm">
+    <Card className="mx-auto my-44 max-w-[23rem] sm:max-w-sm">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
@@ -90,9 +90,6 @@ export default function LoginForm() {
             className="w-full bg-blue-500 hover:bg-blue-400 text-white"
           >
             {isLoading ? "Loging in..." : "Login"}
-          </Button>
-          <Button variant="outline" className="w-full">
-            Login with Google
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
