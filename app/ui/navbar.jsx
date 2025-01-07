@@ -10,11 +10,6 @@ export default function Navbar() {
     {
       title: "Dashboard",
       icon: <Home className="size-4" />,
-      path: "/dashboard",
-    },
-    {
-      title: "Invoices",
-      icon: <ScrollText className="size-4" />,
       path: "/dashboard/invoices",
     },
     {
@@ -32,7 +27,7 @@ export default function Navbar() {
   return (
     <header className="bg-white fixed w-full top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
       <nav className="hidden md:flex">
-        <Link href="/dashboard">
+        <Link href="/dashboard/invoices">
           <h3 className="text-2xl font-bold text-blue-600">ManageInvoice</h3>
         </Link>
       </nav>
@@ -44,7 +39,7 @@ export default function Navbar() {
           </Button>
         </SheetTrigger>
         <SheetContent className="w-[250px] pl-2 pt-2" side="left">
-          <Link href="/dashboard">
+          <Link href="/dashboard/invoices">
             <h3 className="text-2xl font-bold text-blue-600">ManageInvoice</h3>
           </Link>
           <nav className="grid items-start px-2 py-4 text-sm font-medium lg:px-4">

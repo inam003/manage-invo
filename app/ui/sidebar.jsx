@@ -14,11 +14,6 @@ const menus = [
   {
     title: "Dashboard",
     icon: <Home className="size-4" />,
-    path: "/dashboard",
-  },
-  {
-    title: "Invoices",
-    icon: <ScrollText className="size-4" />,
     path: "/dashboard/invoices",
   },
   {

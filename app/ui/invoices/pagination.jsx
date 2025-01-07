@@ -1,87 +1,45 @@
-"use client";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { useState } from "react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-
-export default function PaginationButtons() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 2;
-
+export default function PaginationButtons({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) {
   return (
-    <div className="flex items-center justify-center p-4">
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              className={`hover:bg-transparent ${
-                currentPage === 1
-                  ? "text-gray-300 pointer-events-none"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage > 1) setCurrentPage(currentPage - 1);
-              }}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              href="#"
-              isActive={currentPage === 1}
-              className={
-                currentPage === 1
-                  ? "bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
-                  : "text-gray-500 hover:bg-transparent hover:text-gray-700"
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setCurrentPage(1);
-              }}
-            >
-              1
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              href="#"
-              isActive={currentPage === 2}
-              className={
-                currentPage === 2
-                  ? "bg-blue-600 text-white hover:bg-blue-500 hover:text-white"
-                  : "text-gray-500 hover:bg-transparent hover:text-gray-700"
-              }
-              onClick={(e) => {
-                e.preventDefault();
-                setCurrentPage(2);
-              }}
-            >
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              className={`hover:bg-transparent ${
-                currentPage === totalPages
-                  ? "text-gray-300 pointer-events-none"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={(e) => {
-                e.preventDefault();
-                if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-              }}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+    <div className="flex items-center justify-center space-x-2 py-4">
+      <Button
+        className={
+          currentPage === 1
+            ? "text-gray-500 hover:bg-transparent hover:text-gray-700"
+            : "bg-blue-500 text-white hover:bg-blue-400 hover:text-white"
+        }
+        variant="outline"
+        size="sm"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <ChevronLeft className="size-4" />
+        Previous
+      </Button>
+      <div className="text-sm font-medium">
+        Page {currentPage} of {totalPages}
+      </div>
+      <Button
+        className={
+          currentPage !== totalPages
+            ? "bg-blue-500 text-white hover:bg-blue-400 hover:text-white"
+            : "text-gray-500 hover:bg-transparent hover:text-gray-700"
+        }
+        variant="outline"
+        size="sm"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        Next
+        <ChevronRight className="size-4" />
+      </Button>
     </div>
   );
 }

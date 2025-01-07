@@ -37,7 +37,7 @@ export default function LoginForm() {
 
       if (error) throw error;
       toast.success("Logged in successfully!");
-      router.push("/dashboard");
+      router.push("/dashboard/invoices");
     } catch (error) {
       console.error(error);
     } finally {

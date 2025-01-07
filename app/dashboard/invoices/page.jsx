@@ -7,7 +7,7 @@ import InvoicesTable from "@/app/ui/invoices/table";
 import { fetchInvoices, getSession } from "@/lib/data";
 import NotFound from "./not-found";
 
-const Invoices = () => {
+const Invoices = (props) => {
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
@@ -29,9 +29,8 @@ const Invoices = () => {
     <div className="flex flex-col gap-6">
       {invoices.length > 0 ? (
         <>
-          <h1 className="text-3xl font-medium">Invoices</h1>
-          <div className="flex items-center gap-4">
-            <Search />
+          <div className="flex items-center justify-between gap-4">
+            <h1 className="text-3xl font-medium">Invoices</h1>
             <CreateInvoice />
           </div>
           <div>
