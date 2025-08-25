@@ -47,7 +47,7 @@ const Setting = () => {
     e.preventDefault();
 
     try {
-      const userDetails = getSession();
+      const userDetails = await getSession();
       if (!userDetails) return [];
 
       const { data, error } = await supabase
@@ -65,9 +65,9 @@ const Setting = () => {
       }
 
       toast.success("Account updated successfully");
-      router.push("/dashboard");
+      router.push("/dashboard/invoices");
     } catch (error) {
-      console.log("Error updating invoice:", error);
+      console.log("Error updating setting:", error);
     }
   };
 

@@ -21,11 +21,6 @@ const menus = [
     icon: <Users className="size-4" />,
     path: "/dashboard/customers",
   },
-  {
-    title: "Setting",
-    icon: <Settings className="size-4" />,
-    path: "/dashboard/setting",
-  },
 ];
 
 const Sidebar = () => {

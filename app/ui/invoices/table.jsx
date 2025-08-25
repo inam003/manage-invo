@@ -35,14 +35,15 @@ const InvoicesTable = ({ invoicesData }) => {
 
   const filteredInvoices = useMemo(() => {
     if (!Array.isArray(invoicesData)) return [];
-    if (statusFilter === "all") return invoicesData;
+    const normalizedQuery = searchQuery.trim().toLowerCase();
     return invoicesData.filter((invoice) => {
+      const matchesSearch =
+        !normalizedQuery ||
+        (invoice.customerName || "").toLowerCase().includes(normalizedQuery);
       const matchesStatus =
         statusFilter === "all" ||
-        invoice.invoiceStatus.toLowerCase() === statusFilter.toLowerCase();
-      const matchesSearch = invoice.customerName
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+        (invoice.invoiceStatus || "").toLowerCase() ===
+          statusFilter.toLowerCase();
       return matchesStatus && matchesSearch;
     });
   }, [invoicesData, statusFilter, searchQuery]);
@@ -88,7 +89,10 @@ const InvoicesTable = ({ invoicesData }) => {
           type="text"
           placeholder="Search by customer name..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1);
+          }}
         />
       </div>
 
